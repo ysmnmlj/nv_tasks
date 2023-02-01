@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1 align="center">Task2</h1>
+    <h2 align="center">Cash Register !</h2>
+
+    <script>
+
+        const checkCashRegister = (price, cash, cid) => {
+            const Currency_unit_amount = {
+            "PENNY": .01,
+            "NICKEL": .05,
+            "DIME": .10,
+            "QUARTER": .25,
+            "ONE": 1.00,
+            "FIVE": 5.00,
+            "TEN": 10.00,
+            "TWENTY": 20.00,
+            "ONE HUNDRED": 100.00
+            }
+            let total_caisse = 0;
+            cid.map(function(elt){
+            total_caisse += elt[1];
+            }) ;
+            console.log(total_caisse)
+
+            total_caisse = total_caisse.toFixed(2);
+            let àRendre = cash - price;
+            const change = [];
+            if (àRendre > total_caisse) {
+                return { status: "INSUFFICIENT_FUNDS", change: change };
+            } else if (àRendre.toFixed(2) === total_caisse) {
+                return { status: "CLOSED", change: cid };
+            } else
+            {
+            cid = cid.reverse();
+            for (let elt of cid) {
+                let x = [elt[0], 0];
+                while (àRendre >= Currency_unit_amount[elt[0]] && elt[1] > 0) {
+                    x[1] += Currency_unit_amount[elt[0]];
+                    elt[1] -= Currency_unit_amount[elt[0]];
+                    àRendre -= Currency_unit_amount[elt[0]];
+                    àRendre = àRendre.toFixed(2);
+                }
+                    if (x[1] > 0) {
+                        change.push(x);
+                    }
+            }
+            }
+                    if (àRendre > 0) {
+                        return { status: "INSUFFICIENT_FUNDS", change: [] };
+                    }
+                        return { status: "OPEN", change: change};
+        }
+        console.log(checkCashRegister(19.5, 20, [["PENNY", 1.01], ["NICKEL", 2.05], ["DIME", 3.1], ["QUARTER", 4.25], ["ONE", 90], ["FIVE", 55], ["TEN", 20], ["TWENTY", 60], ["ONE HUNDRED", 100]]))
+    </script>
+    
+</body>
+</html>
